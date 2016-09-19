@@ -1,0 +1,291 @@
+﻿@model MapsProposal.Models.Location
+
+
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+<div id="map"></div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.Latitude)
+    @Html.HiddenFor(model => model.Longitude)
+
+    @Html.HiddenFor(model => model.NorthEastLatitude)
+    @Html.HiddenFor(model => model.NorthEastLongitude)
+    @Html.HiddenFor(model => model.SouthWestLatitude)
+    @Html.HiddenFor(model => model.SouthWestLongitude)
+    @Html.HiddenFor(model => model.LocationType)
+    @Html.HiddenFor(model => model.RectangleArea)
+
+    
+
+<div id="save">
+    <table>
+        <tr>
+            <td id="positionLabel">&nbsp;Position&nbsp;</td><td id="position"></td>
+            <td id="positionNELabel" style="display:none">&nbsp;North East&nbsp;</td><td id="positionNE" style="display:none"></td>
+            <td id="positionSWLabel" style="display:none">&nbsp;South West&nbsp;</td><td id="positionSW" style="display:none"></td>
+            <td id="areaLabel" style="display:none">&nbsp;Area&nbsp;</td><td id="areaText" style="display:none"></td>
+            <td style="width: 10px"></td>
+            <td>@Html.EditorFor(model => model.Name, new { htmlAttributes = new { placeholder = "Name this location" } })</td>
+            <td style="padding-left: 15px"><input type="submit" placeholder="Name this location" value="Create" /></td>
+        </tr>
+    </table>
+</div>
+    <script>
+        
+    </script>
+}
+<script>
+    function LatLongControl(controlDiv, map) {
+
+        // Set CSS for the control border.
+        var controlUI = document.createElement('div');
+        controlUI.style.backgroundColor = '#fff';
+        controlUI.style.border = '2px solid #fff';
+        controlUI.style.borderRadius = '3px';
+        controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+        controlUI.style.cursor = 'pointer';
+        controlUI.style.marginBottom = '22px';
+        controlUI.style.textAlign = 'center';
+        controlUI.title = 'Click to recenter the map';
+        controlDiv.appendChild(controlUI);
+
+        // Set CSS for the control interior.
+        var controlText = document.createElement('div');
+        controlText.style.color = 'rgb(25,25,25)';
+        controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+        controlText.style.fontSize = '16px';
+        controlText.style.lineHeight = '38px';
+        controlText.style.paddingLeft = '5px';
+        controlText.style.paddingRight = '5px';
+        controlText.innerHTML = 'Lat: <input type="text" id="latInput"> Long: <input type="text" id="lngInput">&nbsp;&nbsp;&nbsp;<input type="submit" id="findLocation" value="Locate" onclick="findLocation()">';
+        controlUI.appendChild(controlText);
+
+        
+    }
+
+    function calculateArea()
+    {
+        var northEast = bounds.getNorthEast()
+        var southWest = bounds.getSouthWest()
+        
+        var area = google.maps.geometry.spherical.computeArea([bounds.getNorthEast(), new google.maps.LatLng(northEast.lat(), southWest.lng()), bounds.getSouthWest(), new google.maps.LatLng(southWest.lat(), northEast.lng())])
+
+        $('#areaText').html(area);
+        $('#RectangleArea').val(area);
+    }
+
+      //declare map and marker objects
+      var map;
+      var marker;
+      var rectangle;
+      var bounds;
+       
+      function findLocation() {
+          map.setCenter(new google.maps.LatLng($('#latInput').val(), $('#lngInput').val()));
+          map.setZoom(13);
+          //map.setCenter({ lat: $('#latInput').val(), lng: $('#lngInput').val() });
+      }
+
+      function rectangleUpdated() {
+          bounds = rectangle.getBounds();
+
+          var northEast = bounds.getNorthEast();
+          var southWest = bounds.getSouthWest();
+          document.getElementById('positionNE').innerHTML = northEast;
+          document.getElementById('positionSW').innerHTML = southWest;
+
+          document.getElementById('LocationType').value = 1;
+          document.getElementById('NorthEastLatitude').value = northEast.lat();
+          document.getElementById('NorthEastLongitude').value = northEast.lng();
+          document.getElementById('SouthWestLatitude').value = southWest.lat();
+          document.getElementById('SouthWestLongitude').value = southWest.lng();
+
+          calculateArea()
+      }
+
+      function initMap() {
+          $('#RectangleArea').val(0);
+
+          infoWindow = new google.maps.InfoWindow();
+          map = new google.maps.Map(document.getElementById('map'), {
+          center: { lat: 51.5082416378335, lng: -0.138857960700989 },
+          zoom: 13,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+
+          // Create the DIV to hold the control and call the LatLongControl()
+          // constructor passing in this DIV.
+          var latLongControlDiv = document.createElement('div');
+          var latLongControl = new LatLongControl(latLongControlDiv, map);
+
+          latLongControlDiv.index = 1;
+          map.controls[google.maps.ControlPosition.TOP_RIGHT].push(latLongControlDiv);
+      //}
+
+          var drawingManager = new google.maps.drawing.DrawingManager({
+              drawingMode: google.maps.drawing.OverlayType.MARKER,
+              drawingControl: true,
+              drawingControlOptions: {
+                  position: google.maps.ControlPosition.TOP_CENTER,
+                  drawingModes: ['marker', 'rectangle'] //'marker', 'circle', 'polygon', 'polyline',
+              },
+              markerOptions: { icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png' },
+              circleOptions: {
+                  fillColor: '#ffff00',
+                  fillOpacity: 1,
+                  strokeWeight: 5,
+                  clickable: false,
+                  editable: true,
+                  zIndex: 1
+              }
+          });
+          drawingManager.setMap(map);
+
+          //event hander for someone adding a rectangle
+          drawingManager.addListener('overlaycomplete', function (event) {
+
+              //delete existing rectangle if exists
+              if (typeof rectangle !== 'undefined') {
+                  rectangle.setMap(null)
+              }
+              //delete existing marker if exists
+              if (typeof marker !== 'undefined') {
+                  marker.setMap(null)
+              }
+
+              if (drawingManager.getDrawingMode() == 'marker') {
+                  marker = event.overlay;
+                  var location = marker.getPosition();
+
+                  $('#position').show()
+                  $('#positionLabel').show()
+
+                  document.getElementById('LocationType').value = 0;
+                  document.getElementById('Latitude').value = location.lat()
+                  document.getElementById('Longitude').value = location.lng()
+                  document.getElementById('position').innerHTML = location
+
+                  $('#areaText').hide()
+                  $('#areaLabel').hide()
+                  $('#positionNE').hide()
+                  $('#positionSW').hide()
+                  $('#positionNELabel').hide()
+                  $('#positionSWLabel').hide()
+
+
+              }
+              else if (drawingManager.getDrawingMode() == 'rectangle') {
+                  rectangleResult = event.overlay;
+                  bounds = rectangleResult.getBounds();
+
+                  var newBounds = {
+                      north: bounds.getNorthEast().lat(),
+                      south: bounds.getSouthWest().lat(),
+                      east:  bounds.getNorthEast().lng(),
+                      west:  bounds.getSouthWest().lng()
+                  };
+
+
+                  // Define the rectangle and set its editable property to true.
+                  rectangle = new google.maps.Rectangle({
+                      bounds: newBounds,
+                      editable: true,
+                      draggable: true,
+                      geodesic: true
+                  });
+                  
+                  rectangle.addListener('bounds_changed', function (e) { rectangleUpdated() })
+
+                  rectangle.setMap(map);
+                  rectangleResult.setMap(null);
+
+                  $('#areaText').show()
+                  $('#areaLabel').show()
+                  $('#positionNE').show()
+                  $('#positionSW').show()
+                  $('#positionNELabel').show()
+                  $('#positionSWLabel').show()
+
+                  $('#position').hide()
+                  $('#positionLabel').hide()
+
+                  rectangleUpdated()
+
+
+                  drawingManager.setDrawingMode(null)
+
+                  calculateArea()
+              }
+          })
+
+          // Create the search box and link it to the UI element.
+          var input = document.getElementById('pac-input');
+          var searchBox = new google.maps.places.SearchBox(input);
+          map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+
+
+          // Bias the SearchBox results towards current map's viewport.
+          map.addListener('dragend', function () {
+              searchBox.setBounds(map.getBounds());
+          });
+
+          var markers = [];
+          // Listen for the event fired when the user selects a prediction and retrieve
+          // more details for that place.
+          searchBox.addListener('places_changed', function () {
+              var places = searchBox.getPlaces();
+
+              if (places.length == 0) {
+                  return;
+              }
+
+              // Clear out the old markers.
+              markers.forEach(function (marker) {
+                  marker.setMap(null);
+              });
+              markers = [];
+
+              // For each place, get the icon, name and location.
+              var bounds = new google.maps.LatLngBounds();
+              places.forEach(function (place) {
+                  var icon = {
+                      url: place.icon,
+                      size: new google.maps.Size(71, 71),
+                      origin: new google.maps.Point(0, 0),
+                      anchor: new google.maps.Point(17, 34),
+                      scaledSize: new google.maps.Size(25, 25)
+                  };
+
+                  // Create a marker for each place.
+                  markers.push(new google.maps.Marker({
+                      map: map,
+                      icon: icon,
+                      title: place.name,
+                      position: place.geometry.location
+                  }));
+
+                  if (place.geometry.viewport) {
+                      // Only geocodes have viewport.
+                      bounds.union(place.geometry.viewport);
+                  } else {
+                      bounds.extend(place.geometry.location);
+                  }
+              });
+              map.fitBounds(bounds);
+          });
+
+
+      }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHH2xW97a6O5sf8XvXxfxyBQet31lmlLQ&libraries=places,drawing&callback=initMap"
+        async defer></script>
+

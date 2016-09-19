@@ -1,0 +1,216 @@
+﻿@model IEnumerable<MapsProposal.Models.Location>
+
+@{
+    ViewBag.Title = "Browse Saved Locations";
+}
+<br />
+<div class="formNoMap">
+    <h2>Points</h2>
+    <table class="indexTable">
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Latitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Longitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VegetationCover)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LandUse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Forestry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Influx)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocialInfrastructure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SettlementSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Water)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Height)
+            </th>
+
+
+
+
+        </tr>
+
+        @foreach (var item in (Model.Where(m=>m.LocationType == MapsProposal.Models.LocationType.Point)))
+        {
+            <tr>
+                <td style="min-width: 180px">
+                    @Html.ActionLink("Summary", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Monitor", "Monitor", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Latitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Longitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VegetationCover)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LandUse)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Forestry)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Influx)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SocialInfrastructure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SettlementSize)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Water)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Area)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Height)
+                </td>
+            </tr>
+        }
+
+        </table>
+
+    <h2>Rectangles</h2>
+    <table class="indexTable">
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NorthEastLatitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NorthEastLongitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SouthWestLatitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SouthWestLongitude)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RectangleArea)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VegetationCover)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LandUse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Forestry)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Influx)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SocialInfrastructure)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SettlementSize)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Water)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Area)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Height)
+            </th>
+        </tr>
+
+        @foreach (var item in (Model.Where(m => m.LocationType == MapsProposal.Models.LocationType.Rectangle)))
+        {
+            <tr>
+                <td style="min-width: 180px">
+                    @Html.ActionLink("Summary", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Monitor", "Monitor", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NorthEastLatitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NorthEastLongitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SouthWestLatitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SouthWestLongitude)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RectangleArea)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VegetationCover)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LandUse)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Forestry)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Influx)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SocialInfrastructure)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SettlementSize)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Water)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Area)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Height)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+</div>

@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>@ViewBag.Title - Maps Proposal</title>
+    <script src="~/Scripts/jquery-3.1.0.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-size: 13px;
+        }
+
+        /*
+        #checkboxesForm td {
+            margin: 0;
+            padding: 0;
+        }
+
+        #checkboxesForm th {
+            border-right: 1px solid black;
+            padding: 0;
+            margin: 0;
+        }
+
+        #checkboxesForm .groupend {
+            border-right: 1px solid black;
+        }
+        #checkboxesForm tr {
+            margin: 0;
+            padding: 0;
+        }
+            */
+
+        #map {
+            height: calc(100% - 180px);
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        #header {
+            height: 80px;
+            margin: 0;
+            border: 0;
+        }
+
+        #navigation {
+            height : 15px
+        }
+
+        #save {
+            margin: 0 auto;
+            padding: 0;
+            padding-top: 3px;
+            height: 60px;
+        }
+
+        #navigation, #save {
+            background-color: #006534;
+
+        }
+
+        .controls {
+            margin-top: 10px;
+            border: 1px solid transparent;
+            border-radius: 2px 0 0 2px;
+            box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            height: 32px;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #pac-input {
+            background-color: #fff;
+            font-family: Roboto;
+            font-size: 15px;
+            font-weight: 300;
+            margin-left: 12px;
+            padding: 0 11px 0 13px;
+            text-overflow: ellipsis;
+            width: 300px;
+        }
+
+            #pac-input:focus {
+                border-color: #4d90fe;
+            }
+
+        .pac-container {
+            font-family: Roboto;
+        }
+
+        #type-selector {
+            color: #fff;
+            background-color: #006534;
+            padding: 5px 11px 0px 11px;
+        }
+
+            #type-selector label {
+                font-family: Roboto;
+                font-size: 13px;
+                font-weight: 300;
+            }
+
+        #target {
+            width: 345px;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #006534;
+            
+        }
+
+        li {
+            float: left;
+            font-family: Impact;
+            font-size: 17px;
+
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        #position, #positionNE, #positionSW,#areaText {
+            background-color: white;
+            width: 150px;
+            height: 10px;
+            padding: 2px;
+
+        }
+        #positionLabel,#positionNELabel,#positionSWLabel,#areaLabel {
+            font-family: Impact;
+            font-size: 17px;
+            color:white;
+        }
+
+        /* Change the link color to #111 (black) on hover */
+        li a:hover {
+            background-color: #004734;
+        }
+
+       li a:active {
+            background-color: #2d2512;
+        }
+
+        input[type=submit] {
+            background-color: #727476;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #004734;
+        }
+
+       input[type=submit]:active {
+            background-color: #2d2512;
+        }
+
+        input[type=text] {
+            height: 30px;
+        }
+
+
+        td {
+            padding: 0px;
+            height: 20px;
+            margin: 0px;
+        }
+
+        .monitoringProperties tr td {
+            padding: 5px;
+            text-align: center;
+        }
+
+        .formNoMap {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .formNoMap h2 {
+            font-family: Roboto;
+        }
+
+        .form-element {
+            padding-right: 20px;
+            font-size: 15px;
+        }
+
+        .form-element label {
+            text-decoration: solid;
+        }
+
+        .indexTable tr td {
+            padding-top: 1px;
+            padding-right: 3px;
+            padding-bottom: 1px;
+            text-align: center;
+        }
+        
+
+    </style>
+</head>
+<body>
+        <div id="header">
+            <img src="~/Resources/MET logo.jpg" />
+        </div>
+        <ul>
+            <li><a href="/">Create</a></li>
+            <li><a href="/Location/Index">Browse</a></li>
+        </ul>
+
+    @RenderBody()
+</body>
+</html>

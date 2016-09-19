@@ -1,0 +1,182 @@
+﻿@model MapsProposal.Models.Location
+
+@{
+    ViewBag.Title = Model.Name;
+}
+<div id="map"></div>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.VegetationCover)
+    @Html.HiddenFor(model => model.LandUse)
+    @Html.HiddenFor(model => model.Forestry)
+    @Html.HiddenFor(model => model.Influx)
+    @Html.HiddenFor(model => model.SocialInfrastructure)
+    @Html.HiddenFor(model => model.SettlementSize)
+    @Html.HiddenFor(model => model.Water)
+    @Html.HiddenFor(model => model.Area)
+    @Html.HiddenFor(model => model.Height)
+
+
+<div id="save">
+    <table>
+        <tr>
+            @if (Model.LocationType == MapsProposal.Models.LocationType.Point)
+            {
+            <td id="positionLabel" style="height: 40px">&nbsp;Position&nbsp;</td>
+            <td id="position">@Model.Latitude, @Model.Longitude</td>
+            }
+            else
+            {
+            <td id="positionNELabel" style="height: 40px">&nbsp;North East&nbsp;</td>
+            <td id="positionNE">@Model.NorthEastLatitude, @Model.NorthEastLongitude</td>
+            <td id="positionSWLabel">&nbsp;South West&nbsp;</td>
+            <td id="positionSW">@Model.SouthWestLatitude, @Model.SouthWestLongitude</td>
+            <td id="areaLabel">&nbsp;Area&nbsp;</td>
+            <td id="areaText">@Model.RectangleArea</td>
+            }
+            <td style="padding-left: 15px"><input type="submit" value="Update Properties" /></td>
+        </tr>
+    </table>
+</div>
+}
+<script>
+    var checkboxesTable = '<table id="checkboxesForm"><tr><th colspan="3">Environmental</th><th colspan="3">Social</th><th colspan="3">Tailings</th></tr><tr><td><input type="checkbox" class="checkForm" id="vegetationCoverCheck" onclick="fillHiddenBoolFor(\'VegetationCover\')"> Vegetation Cover</td><td><input type="checkbox" class="checkForm" id="landUseCheck" onclick="fillHiddenBoolFor(\'LandUse\')"> Land Use</td><td class="groupend"><input type="checkbox" class="checkForm" id="forestryCheck" onclick="fillHiddenBoolFor(\'Forestry\')"> Forestry&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input type="checkbox" class="checkForm" id="influxCheck" onclick="fillHiddenBoolFor(\'Influx\')"> Influx</td><td><input type="checkbox" class="checkForm" id="socialInfrastructureCheck" onclick="fillHiddenBoolFor(\'SocialInfrastructure\')"> Social Infrastructure</td><td class="groupend"><input type="checkbox" class="checkForm" id="settlementSizeCheck" onclick="fillHiddenBoolFor(\'SettlementSize\')"> Settlement Size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><input type="checkbox" class="checkForm" id="waterCheck" onclick="fillHiddenBoolFor(\'Water\')"> Water</td><td><input type="checkbox" class="checkForm" id="areaCheck" onclick="fillHiddenBoolFor(\'Area\')"> Area</td><td><input type="checkbox" class="checkForm" id="heightCheck" onclick="fillHiddenBoolFor(\'Height\')"> Height</td></tr></table>'
+
+
+    function fillHiddenBoolFor(fieldName)
+    {
+        if(document.getElementById(fieldName).value == 'false')
+        {
+            document.getElementById(fieldName).value = true;
+        }
+        else
+        {
+            document.getElementById(fieldName).value = false;
+
+        }
+    }
+
+      //declare map and marker objects
+      var map;
+      var marker;
+
+      //get the coordinates of the marker
+      function getCoordinates() {
+        var coords = marker.getPosition()
+        alert(coords)
+
+      }
+
+      function setCheckboxValues() {
+          $('#VegetationCover').val( @Model.VegetationCover.ToString().ToLower() );
+          $('#vegetationCoverCheck').prop('checked',  @Model.VegetationCover.ToString().ToLower());
+
+          $('#LandUse').val( @Model.LandUse.ToString().ToLower() );
+          $('#landUseCheck').prop('checked',  @Model.LandUse.ToString().ToLower());
+
+          $('#Forestry').val( @Model.Forestry.ToString().ToLower() );
+          $('#forestryCheck').prop('checked',  @Model.Forestry.ToString().ToLower());
+
+          $('#Influx').val( @Model.Influx.ToString().ToLower() );
+          $('#influxCheck').prop('checked',  @Model.Influx.ToString().ToLower());
+
+          $('#SocialInfrastructure').val( @Model.SocialInfrastructure.ToString().ToLower() );
+          $('#socialInfrastructureCheck').prop('checked',  @Model.SocialInfrastructure.ToString().ToLower());
+
+          $('#SettlementSize').val( @Model.SettlementSize.ToString().ToLower() );
+          $('#settlementSizeCheck').prop('checked',  @Model.SettlementSize.ToString().ToLower());
+
+          $('#Water').val( @Model.Water.ToString().ToLower() );
+          $('#waterCheck').prop('checked',  @Model.Water.ToString().ToLower());
+
+          $('#Area').val( @Model.Area.ToString().ToLower() );
+          $('#areaCheck').prop('checked',  @Model.Area.ToString().ToLower());
+
+          $('#Height').val( @Model.Height.ToString().ToLower() );
+          $('#heightCheck').prop('checked',  @Model.Height.ToString().ToLower());
+      }
+
+      function CenterControl(controlDiv, map) {
+
+          // Set CSS for the control border.
+          var controlUI = document.createElement('div');
+          controlUI.style.backgroundColor = '#fff';
+          controlUI.style.border = '2px solid #fff';
+          controlUI.style.borderRadius = '3px';
+          controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+          controlUI.style.cursor = 'pointer';
+          controlUI.style.marginBottom = '22px';
+          controlUI.style.textAlign = 'center';
+          controlUI.title = 'Click to recenter the map';
+          controlDiv.appendChild(controlUI);
+
+          // Set CSS for the control interior.
+          var controlText = document.createElement('div');
+          controlText.style.color = 'rgb(25,25,25)';
+          controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+          controlText.style.fontSize = '16px';
+          controlText.style.lineHeight = '38px';
+          controlText.style.paddingLeft = '5px';
+          controlText.style.paddingRight = '5px';
+          controlText.innerHTML = checkboxesTable;
+          controlUI.appendChild(controlText);
+
+
+      }
+
+
+      function initMap() {
+          if('@Model.LocationType' == 'Rectangle') {
+              infoWindow = new google.maps.InfoWindow();
+              map = new google.maps.Map(document.getElementById('map'), {
+                  center: {lat: @(Model.NorthEastLatitude == null ? 0 : Model.NorthEastLatitude), lng: @(Model.NorthEastLongitude == null ? 0 : Model.NorthEastLongitude)},
+                  zoom: 13,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+              });
+
+
+
+              rectangle = new google.maps.Rectangle({
+                  map: map,
+                  bounds: {
+                      north: @(Model.NorthEastLatitude == null ? 0 : Model.NorthEastLatitude),
+                      south: @(Model.SouthWestLatitude == null ? 0 : Model.SouthWestLatitude),
+                      east: @(Model.NorthEastLongitude == null ? 0 : Model.NorthEastLongitude),
+                      west: @(Model.SouthWestLongitude == null ? 0 : Model.SouthWestLongitude),
+                  }
+              });
+          }
+          else {
+              infoWindow = new google.maps.InfoWindow();
+              map = new google.maps.Map(document.getElementById('map'), {
+                  center: {lat: @(Model.Latitude == null ? 0 : Model.Latitude), lng: @(Model.Longitude == null ? 0 : Model.Longitude)},
+                  zoom: 13,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+              });
+
+              marker = new google.maps.Marker({
+                  position: {lat:  @(Model.Latitude == null ? 0 : Model.Latitude), lng: @(Model.Longitude == null ? 0 : Model.Longitude)},
+                  map: map
+              });
+          }
+
+          // Create the DIV to hold the control and call the CenterControl()
+          // constructor passing in this DIV.
+
+          var centerControlDiv = document.createElement('div');
+          var centerControl = new CenterControl(centerControlDiv, map);
+
+          centerControlDiv.index = 1;
+          map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(centerControlDiv);
+
+          google.maps.event.addListenerOnce(map, 'idle', function(){
+              setCheckboxValues();
+          });
+
+      }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHH2xW97a6O5sf8XvXxfxyBQet31lmlLQ&libraries=places&callback=initMap"
+        async defer></script>
+

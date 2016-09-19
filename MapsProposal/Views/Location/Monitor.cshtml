@@ -1,0 +1,241 @@
+﻿@model MapsProposal.Models.Location
+
+@{
+    ViewBag.Title = "Monitor";
+}
+
+<div class="formNoMap">
+    <h2>Monitor</h2>
+
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            <h3>@Html.DisplayTextFor(model => model.Name)</h3>
+            <br />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.ID)
+
+
+
+            @if (Model.LocationType == MapsProposal.Models.LocationType.Point)
+            {
+                <table>
+                    <tr>
+                        <td>
+                            <div class="form-element">
+                                @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DisplayTextFor(model => model.Latitude)
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-element">
+                                @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DisplayTextFor(model => model.Longitude)
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            }
+
+            @if (Model.LocationType == MapsProposal.Models.LocationType.Rectangle)
+            {
+                <table>
+                    <tr>
+                        <td>
+                            <div class="form-element">
+                                @Html.LabelFor(model => model.NorthEastLatitude, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DisplayTextFor(model => model.NorthEastLatitude)
+                                </div>
+                            </div>
+                            </td>
+                        <td>
+
+                            <div class="form-element">
+                                @Html.LabelFor(model => model.NorthEastLongitude, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DisplayTextFor(model => model.NorthEastLongitude)
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-element">
+                                @Html.LabelFor(model => model.SouthWestLatitude, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DisplayTextFor(model => model.SouthWestLatitude)
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-element">
+                                @Html.LabelFor(model => model.SouthWestLongitude, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DisplayTextFor(model => model.SouthWestLongitude)
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-element">
+                                @Html.LabelFor(model => model.RectangleArea, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-10">
+                                    @Html.DisplayTextFor(model => model.RectangleArea)
+                                </div>
+                            </div>
+                        </td>
+                        </tr>
+                    </table>
+                            }
+                            <br />
+
+                            <table class="monitoringProperties">
+                                <tr>
+                                    <th colspan="3">Environmental</th>
+                                    <th colspan="3">Social</th>
+                                    <th colspan="3">Tailings</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.VegetationCover, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.VegetationCover)
+                                                    @Html.ValidationMessageFor(model => model.VegetationCover, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.LandUse, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.LandUse)
+                                                    @Html.ValidationMessageFor(model => model.LandUse, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Forestry, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.Forestry)
+                                                    @Html.ValidationMessageFor(model => model.Forestry, "", new { @class = "text-danger" })
+                                                    &nbsp;&nbsp;&nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Influx, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.Influx)
+                                                    @Html.ValidationMessageFor(model => model.Influx, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.SocialInfrastructure, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.SocialInfrastructure)
+                                                    @Html.ValidationMessageFor(model => model.SocialInfrastructure, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.SettlementSize, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.SettlementSize)
+                                                    @Html.ValidationMessageFor(model => model.SettlementSize, "", new { @class = "text-danger" })
+                                                    &nbsp;&nbsp;&nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Water, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.Water)
+                                                    @Html.ValidationMessageFor(model => model.Water, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Area, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.Area)
+                                                    @Html.ValidationMessageFor(model => model.Area, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Height, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.Height)
+                                                    @Html.ValidationMessageFor(model => model.Height, "", new { @class = "text-danger" })
+                                                    &nbsp;&nbsp;&nbsp;
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+                                </tr>
+                            </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                            <br />
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Submit" class="btn btn-default" />
+                                </div>
+                            </div>
+            </div>
+            }
+
+</div>
