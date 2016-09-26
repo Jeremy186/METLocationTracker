@@ -27,6 +27,7 @@ namespace MapsProposal.Models
         public bool Water { get; set; }
         public bool Area { get; set; }
         public bool Height { get; set; }
+        public bool test { get; set; }
 
         public LocationType LocationType { get; set; }
         public double? Latitude { get; set; }
