@@ -212,6 +212,10 @@
             padding-bottom: 1px;
             text-align: center;
         }
+
+        #loginNav {
+            float:right;
+        }
     </style>
 </head>
 <body>
@@ -221,8 +225,9 @@
     <ul>
         <li><a href="/">Create</a></li>
         <li><a href="/Location/Index">Browse</a></li>
+        <li id="loginNav">@Html.Partial("_LoginPartial")</li>
     </ul>
-
+    
     @RenderBody()
 
 

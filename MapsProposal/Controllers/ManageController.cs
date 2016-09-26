@@ -98,7 +98,7 @@ namespace MapsProposal.Controllers
             }
             return RedirectToAction("ManageLogins", new { Message = message });
         }
-
+        /*
         //
         // GET: /Manage/AddPhoneNumber
         public ActionResult AddPhoneNumber()
@@ -212,7 +212,7 @@ namespace MapsProposal.Controllers
             }
             return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
-
+        */
         //
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
@@ -298,7 +298,7 @@ namespace MapsProposal.Controllers
                 OtherLogins = otherLogins
             });
         }
-
+        /*
         //
         // POST: /Manage/LinkLogin
         [HttpPost]
@@ -321,7 +321,7 @@ namespace MapsProposal.Controllers
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
         }
-
+        */
         protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
