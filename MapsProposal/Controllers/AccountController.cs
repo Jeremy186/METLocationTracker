@@ -496,7 +496,7 @@ namespace MapsProposal.Controllers
             {
                 return Redirect(returnUrl);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Location");
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
