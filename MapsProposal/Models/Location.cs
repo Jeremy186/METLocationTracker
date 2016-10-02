@@ -17,6 +17,7 @@ namespace MapsProposal.Models
 
         public int ID { get; set; }
         public string Name { get; set; }
+        public Guid UserId { get; set; }
 
         public bool VegetationCover { get; set; }
         public bool LandUse { get; set; }

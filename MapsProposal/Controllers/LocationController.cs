@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using MapsProposal.DAL;
 using MapsProposal.Models;
+using Microsoft.AspNet.Identity;
+using System.Web.Security;
 
 namespace MapsProposal.Controllers
 {
@@ -18,8 +20,8 @@ namespace MapsProposal.Controllers
         // GET: Location
         public ActionResult Index()
         {
-
-            return View(db.Locations.ToList());
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            return View(db.Locations.Where(l => l.UserId == userId).ToList());
 
 
         }
@@ -56,6 +58,7 @@ namespace MapsProposal.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    location.UserId = Guid.Parse(User.Identity.GetUserId());
                     db.Locations.Add(location);
                     db.SaveChanges();
                     return RedirectToAction("Monitor", new { id = location.ID });
