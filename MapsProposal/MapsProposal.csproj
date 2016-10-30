@@ -199,11 +199,25 @@
     <Compile Include="Migrations\201610010750171_userid.Designer.cs">
       <DependentUpon>201610010750171_userid.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610301810375_Subscription.cs" />
+    <Compile Include="Migrations\201610301810375_Subscription.Designer.cs">
+      <DependentUpon>201610301810375_Subscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610302011057_notsure.cs" />
+    <Compile Include="Migrations\201610302011057_notsure.Designer.cs">
+      <DependentUpon>201610302011057_notsure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610302131426_test.cs" />
+    <Compile Include="Migrations\201610302131426_test.Designer.cs">
+      <DependentUpon>201610302131426_test.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Subscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -310,8 +324,19 @@
     <EmbeddedResource Include="Migrations\201610010750171_userid.resx">
       <DependentUpon>201610010750171_userid.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610301810375_Subscription.resx">
+      <DependentUpon>201610301810375_Subscription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610302011057_notsure.resx">
+      <DependentUpon>201610302011057_notsure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610302131426_test.resx">
+      <DependentUpon>201610302131426_test.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

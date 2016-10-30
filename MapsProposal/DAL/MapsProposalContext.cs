@@ -11,11 +11,11 @@ namespace MapsProposal.DAL
         }
 
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Subscription> Subscriptions { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
         }
     }
 }

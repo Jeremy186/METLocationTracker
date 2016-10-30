@@ -1,8 +1,19 @@
-﻿
+﻿@model MapsProposal.Models.AdminViewModel
+
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Admin";
 }
 
-<h2>Index</h2>
+<h2>Users</h2>
+<table>
+    @foreach (var user in Model.Users)
+    {
 
-<p>g'day</p>
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.FirstName</td>
+            <td>@user.LastName</td>
+        </tr>
+
+    }
+</table>
