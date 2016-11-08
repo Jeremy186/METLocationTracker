@@ -10,9 +10,16 @@ namespace MapsProposal.Models
         public IEnumerable<ApplicationUser> Users { get; set; }
     }
 
+    public enum Role
+    {
+        User,
+        Admin
+    }
     public class DetailsViewModel
     {
-        public ApplicationUser User { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public Role Role { get; set; }
         public IEnumerable<Location> Locations { get; set; }
     }
 }

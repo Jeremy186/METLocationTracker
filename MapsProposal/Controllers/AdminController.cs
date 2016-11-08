@@ -7,7 +7,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using MapsProposal.Models;
-
+using System.Net;
+using MapsProposal.DAL;
+using System.Threading.Tasks;
 
 namespace MapsProposal.Controllers
 {
@@ -16,6 +18,7 @@ namespace MapsProposal.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private MapsProposalContext db = new MapsProposalContext();
 
         public AdminController()
         {
@@ -59,6 +62,61 @@ namespace MapsProposal.Controllers
                 Users = UserManager.Users
             };
             return View(model);
+        }
+
+        public ActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var user = UserManager.FindById<ApplicationUser, string>(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var userLocations = db.Locations.Where(l => l.UserId.ToString() == user.Id);
+            Role role = new Role();
+            if (UserManager.IsInRole(user.Id, "Admin"))
+                role = Role.Admin;
+            else
+                role = Role.User;
+            var model = new DetailsViewModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Role = role,
+                Locations = userLocations
+            };
+            return View(model);
+        }
+
+        [HttpPost, ActionName("Edit")]
+        public async Task<ActionResult> EditUser(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            
+          
+            var userToUpdate = await UserManager.FindByIdAsync(id);
+
+            var x = Request.Form.AllKeys;
+            
+            
+            return RedirectToAction("Edit", "Admin");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

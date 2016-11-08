@@ -10,9 +10,15 @@
     {
 
         <tr>
+            <td>
+                @Html.ActionLink("Summary", "Edit", new { id = user.Id })
+            </td>
             <td>@user.Email</td>
             <td>@user.FirstName</td>
             <td>@user.LastName</td>
+            <td>@foreach(var role in user.Roles) {
+                role.ToString();
+            }</td>
         </tr>
 
     }
