@@ -195,23 +195,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610010750171_userid.cs" />
-    <Compile Include="Migrations\201610010750171_userid.Designer.cs">
-      <DependentUpon>201610010750171_userid.cs</DependentUpon>
+    <Compile Include="Migrations\ApplicationDbContext\201611081028153_InitialCreate.cs" />
+    <Compile Include="Migrations\ApplicationDbContext\201611081028153_InitialCreate.Designer.cs">
+      <DependentUpon>201611081028153_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201610301810375_Subscription.cs" />
-    <Compile Include="Migrations\201610301810375_Subscription.Designer.cs">
-      <DependentUpon>201610301810375_Subscription.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610302011057_notsure.cs" />
-    <Compile Include="Migrations\201610302011057_notsure.Designer.cs">
-      <DependentUpon>201610302011057_notsure.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610302131426_test.cs" />
-    <Compile Include="Migrations\201610302131426_test.Designer.cs">
-      <DependentUpon>201610302131426_test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\ApplicationDbContext\Configuration.cs" />
+    <Compile Include="Migrations\MapsProposalContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -222,14 +211,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\MapsProposal1.mdf" />
-    <Content Include="App_Data\MapsProposal1_log.ldf">
-      <DependentUpon>MapsProposal1.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\MapsProposalContext.mdf" />
-    <Content Include="App_Data\MapsProposalContext_log.ldf">
-      <DependentUpon>MapsProposalContext.mdf</DependentUpon>
-    </Content>
     <Content Include="App_Start\Content\bootstrap.css" />
     <Content Include="App_Start\Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -321,21 +302,13 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610010750171_userid.resx">
-      <DependentUpon>201610010750171_userid.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610301810375_Subscription.resx">
-      <DependentUpon>201610301810375_Subscription.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610302011057_notsure.resx">
-      <DependentUpon>201610302011057_notsure.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610302131426_test.resx">
-      <DependentUpon>201610302131426_test.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="App_Data\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Extensions\" />
+    <EmbeddedResource Include="Migrations\ApplicationDbContext\201611081028153_InitialCreate.resx">
+      <DependentUpon>201611081028153_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

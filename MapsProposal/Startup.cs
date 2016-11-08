@@ -39,7 +39,7 @@ namespace MapsProposal
 
             // In Startup iam creating first Admin Role and creating a default Admin User    
 
-            /*
+            
             if (!roleManager.RoleExists("Admin"))
             {
 
@@ -65,7 +65,7 @@ namespace MapsProposal
                     var result1 = userManager.AddToRole(user.Id, "Admin");
                 }
             }
-            */
+            
             
         }
     }
