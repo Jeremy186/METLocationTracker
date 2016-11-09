@@ -93,6 +93,7 @@ namespace MapsProposal.Controllers
         }
 
         [HttpPost, ActionName("Edit")]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditUser(string id)
         {
             if (id == null)

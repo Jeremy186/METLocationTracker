@@ -3,19 +3,35 @@
 @{
     ViewBag.Title = "Edit User";
 }
+<div class="formNoMap">
 
-<h2>@Model.FirstName @Model.LastName</h2>
-<table>
-    <tr>
-        <td>Role:</td><td>@Model.Role</td>@Html.EditorFor(model => model.Role)<td></td>
-    </tr>
-</table>
-<table>
-    @foreach(var location in Model.Locations)
+
+
+    @using (Html.BeginForm())
     {
-        <tr>
-            <td>@location.Name</td>
-        </tr>
+        @Html.AntiForgeryToken()
+
+        <h2>@Model.FirstName @Model.LastName</h2>
+        <table>
+            <tr>
+                <td>Role:</td>
+                <td>@Model.Role</td>@Html.EditorFor(model => model.Role)
+                <td></td>
+            </tr>
+        </table>
+        <table>
+            @foreach (var location in Model.Locations)
+            {
+                <tr>
+                    <td>@location.Name</td>
+                </tr>
+            }
+        </table>
     }
-</table>
-<input type="submit" value="Update" class="btn btn-default" />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Submit" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+       
