@@ -37,8 +37,9 @@ namespace MapsProposal.Models
         public double? SouthWestLatitude { get; set; }
         public double? SouthWestLongitude { get; set; }
         public double? RectangleArea { get; set; }
-       
+       /*
         public int? SubscriptionId { get; set; }
         public virtual Subscription Subscription { get; set; }
+        */
     }
 }

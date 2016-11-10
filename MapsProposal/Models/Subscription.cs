@@ -10,10 +10,11 @@ namespace MapsProposal.Models
         Sentinel,
         Worldview
     }
-
+    
     public class Subscription
     {
         public int ID { get; set;  }
         public Sattelite Sattelite { get; set; }
     }
+    
 }

@@ -200,6 +200,10 @@
       <DependentUpon>201611081028153_InitialCreate.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\ApplicationDbContext\Configuration.cs" />
+    <Compile Include="Migrations\MapsProposalContext\201611101658020_fixlocationerror6.cs" />
+    <Compile Include="Migrations\MapsProposalContext\201611101658020_fixlocationerror6.Designer.cs">
+      <DependentUpon>201611101658020_fixlocationerror6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\MapsProposalContext\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AdminViewModel.cs" />
@@ -310,6 +314,12 @@
     <EmbeddedResource Include="Migrations\ApplicationDbContext\201611081028153_InitialCreate.resx">
       <DependentUpon>201611081028153_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\MapsProposalContext\201611101658020_fixlocationerror6.resx">
+      <DependentUpon>201611101658020_fixlocationerror6.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -9,7 +9,7 @@ namespace MapsProposal.Migrations.MapsProposalContext
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             MigrationsDirectory = @"Migrations\MapsProposalContext";
         }
 

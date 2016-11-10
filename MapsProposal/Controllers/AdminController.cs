@@ -77,16 +77,12 @@ namespace MapsProposal.Controllers
             }
 
             var userLocations = db.Locations.Where(l => l.UserId.ToString() == user.Id);
-            Role role = new Role();
-            if (UserManager.IsInRole(user.Id, "Admin"))
-                role = Role.Admin;
-            else
-                role = Role.User;
+
             var model = new DetailsViewModel
             {
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Role = role,
+                IsAdmin = UserManager.IsInRole(user.Id, "Admin"),
                 Locations = userLocations
             };
             return View(model);
@@ -105,10 +101,19 @@ namespace MapsProposal.Controllers
           
             var userToUpdate = await UserManager.FindByIdAsync(id);
 
-            var role = model.Role;
             
+
+            if (model.IsAdmin && !UserManager.IsInRole(id, "Admin"))
+            {
+                UserManager.AddToRole(id, "Admin");
+            }
+            else if(!model.IsAdmin && UserManager.IsInRole(id, "Admin"))
+            {
+                UserManager.RemoveFromRole(id, "Admin");
+            }
+
             
-            return RedirectToAction("Edit", "Admin");
+            return RedirectToAction("Index", "Admin");
         }
 
         protected override void Dispose(bool disposing)

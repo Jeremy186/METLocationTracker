@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Edit User";
 }
+<div class="formNoMap">
+
 
 @using (Html.BeginForm())
 {
@@ -10,16 +12,51 @@
 <h2>@Model.FirstName @Model.LastName</h2>
 <table>
     <tr>
-        <td>Role:</td><td>@Model.Role</td>@Html.EditorFor(model => model.Role)<td></td>
+        <td>@Html.DisplayNameFor(model => model.IsAdmin)</td><td>@Html.EditorFor(model => model.IsAdmin)</td>
     </tr>
 </table>
+    <h2>Locations</h2>
+    <h3>Points</h3>
 <table>
-    @foreach (var location in Model.Locations)
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Latitude</td>
+            <td>Longitude</td>
+        </tr>
+    </thead>
+    @foreach (var location in Model.Locations.Where(l => l.LocationType == MapsProposal.Models.LocationType.Point))
+    {
+            <tr>
+                <td>@location.Name</td>
+                <td>@location.Latitude</td>
+                <td>@location.Longitude</td>
+            </tr>
+    }
+</table>
+<h3>Rectangles</h3>
+<table>
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>North West Latitude</td>
+            <td>North West Longitude</td>
+            <td>South West Latitude</td>
+            <td>South West Longitude</td>
+        </tr>
+    </thead>
+    @foreach (var location in Model.Locations.Where(l => l.LocationType == MapsProposal.Models.LocationType.Rectangle))
     {
         <tr>
             <td>@location.Name</td>
+            <td>@location.NorthEastLatitude</td>
+            <td>@location.NorthEastLongitude</td>
+            <td>@location.SouthWestLatitude</td>
+            <td>@location.SouthWestLongitude</td>
         </tr>
     }
 </table>
 <input type="submit" value="Update" class="btn btn-default" />
 }
+
+</div>
