@@ -93,7 +93,8 @@ namespace MapsProposal.Controllers
         }
 
         [HttpPost, ActionName("Edit")]
-        public async Task<ActionResult> EditUser(string id)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditUser(string id, DetailsViewModel model)
         {
             if (id == null)
             {
@@ -104,7 +105,7 @@ namespace MapsProposal.Controllers
           
             var userToUpdate = await UserManager.FindByIdAsync(id);
 
-            var x = Request.Form.AllKeys;
+            var role = model.Role;
             
             
             return RedirectToAction("Edit", "Admin");
