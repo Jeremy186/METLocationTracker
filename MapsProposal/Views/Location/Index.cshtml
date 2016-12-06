@@ -56,6 +56,7 @@
         {
             <tr>
                 <td style="min-width: 180px">
+                    @Html.ActionLink("Images", "Images", new { id = item.ID }) |
                     @Html.ActionLink("Summary", "Edit", new { id = item.ID }) |
                     @Html.ActionLink("Monitor", "Monitor", new { id = item.ID }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.ID })
@@ -157,6 +158,7 @@
         {
             <tr>
                 <td style="min-width: 180px">
+                    @Html.ActionLink("Images", "Images", new { id = item.ID }) |
                     @Html.ActionLink("Summary", "Edit", new { id = item.ID }) |
                     @Html.ActionLink("Monitor", "Monitor", new { id = item.ID }) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.ID })

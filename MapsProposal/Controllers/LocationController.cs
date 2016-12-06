@@ -26,6 +26,20 @@ namespace MapsProposal.Controllers
 
         }
 
+        public ActionResult Images(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Location location = db.Locations.Find(id);
+            if (location == null)
+            {
+                return HttpNotFound();
+            }
+            return View(location);
+        }
+
         // GET: Location/Details/5
         public ActionResult Details(int? id)
         {
