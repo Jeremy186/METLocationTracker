@@ -10,6 +10,7 @@ using MapsProposal.DAL;
 using MapsProposal.Models;
 using Microsoft.AspNet.Identity;
 using System.Web.Security;
+using System.IO;
 
 namespace MapsProposal.Controllers
 {
@@ -26,6 +27,8 @@ namespace MapsProposal.Controllers
 
         }
 
+
+
         public ActionResult Images(int? id)
         {
             if (id == null)
@@ -37,6 +40,22 @@ namespace MapsProposal.Controllers
             {
                 return HttpNotFound();
             }
+            //&BBOX=3237474,5039357,3243535,5045417
+            string requestUrl = "http://postcards.sentinel-hub.com/v1/wms/bc5af835-ee20-4d98-bda9-b64b2fd975a8?SERVICE=WMS&REQUEST=GetMap&LAYERS=TRUE_COLOR&MAXCC=50&WIDTH=640&HEIGHT=640&gain=1&FORMAT=image/jpeg&bgcolor=00000000&transparent=1&TIME=2016-02-08";
+            string bboxParams = "&BBOX=" + location.SouthWestLongitude + "," + location.NorthEastLongitude + "," + location.SouthWestLatitude + "," + location.NorthEastLatitude;
+            requestUrl += bboxParams;
+
+            var request = WebRequest.Create(requestUrl);
+            var response = request.GetResponse();
+            var bitmap = System.Drawing.Image.FromStream(response.GetResponseStream());
+            response.Close();
+
+            MemoryStream ms = new MemoryStream();
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            byte[] imageData = ms.ToArray();
+
+
+            ViewBag.ImageData = imageData;
             return View(location);
         }
 
