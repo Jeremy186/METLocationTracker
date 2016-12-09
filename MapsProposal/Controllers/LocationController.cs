@@ -11,6 +11,8 @@ using MapsProposal.Models;
 using Microsoft.AspNet.Identity;
 using System.Web.Security;
 using System.IO;
+using System.Text;
+using System.Xml;
 
 namespace MapsProposal.Controllers
 {
@@ -40,10 +42,26 @@ namespace MapsProposal.Controllers
             {
                 return HttpNotFound();
             }
+
+            var getCapabilitiesRequest = WebRequest.Create("https://resources.giscloud.com/wms/f5dff74a4a4d330bfc38bda9ad28faa6?SERVICE=WMS&REQUEST=GetCapabilities");
+
+            var getCapabilitiesResponse = getCapabilitiesRequest.GetResponse();
+            Stream receiveStream = getCapabilitiesResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
+            string xml = readStream.ReadToEnd();
+            getCapabilitiesResponse.Close();
+            readStream.Close();
+
+            XmlDocument capabilities = new XmlDocument();
+            capabilities.LoadXml(xml);
+
+            var rootLayers = capabilities.SelectNodes("Layers");
+
             //&BBOX=3237474,5039357,3243535,5045417
-            string requestUrl = "http://postcards.sentinel-hub.com/v1/wms/bc5af835-ee20-4d98-bda9-b64b2fd975a8?SERVICE=WMS&REQUEST=GetMap&LAYERS=TRUE_COLOR&MAXCC=50&WIDTH=640&HEIGHT=640&gain=1&FORMAT=image/jpeg&bgcolor=00000000&transparent=1&TIME=2016-02-08";
-            string bboxParams = "&BBOX=" + location.SouthWestLongitude + "," + location.NorthEastLongitude + "," + location.SouthWestLatitude + "," + location.NorthEastLatitude;
-            requestUrl += bboxParams;
+            string requestUrl = "https://resources.giscloud.com/wms/f5dff74a4a4d330bfc38bda9ad28faa6?SERVICE=WMS&REQUEST=GetMap&WIDTH=640&HEIGHT=640&FORMAT=image/png&bbox=-118.439916807,34.8322196664,-118.008444218,35.1945509515&styles=layer1437818_style&SRS=EPSG:4326&layers=1437818:sentinel";
+            //string bboxParams = "&BBOX=" + location.SouthWestLongitude + "," + location.NorthEastLongitude + "," + location.SouthWestLatitude + "," + location.NorthEastLatitude;
+            //requestUrl += bboxParams;
 
             var request = WebRequest.Create(requestUrl);
             var response = request.GetResponse();
