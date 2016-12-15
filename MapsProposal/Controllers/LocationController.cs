@@ -29,7 +29,23 @@ namespace MapsProposal.Controllers
 
         }
 
+        public class Layer
+        {
+            public string Name;
+            public double xMin { get; set; }
+            public double xMax { get; set; }
+            public double yMin { get; set; }
+            public double yMax { get; set; }
 
+            public Layer(string name, double xmin, double xmax, double ymin, double ymax)
+            {
+                Name = name;
+                xMax = xmax;
+                xMin = xmin;
+                yMin = ymin;
+                yMax = ymax;
+            }
+        }
 
         public ActionResult Images(int? id)
         {
@@ -53,10 +69,43 @@ namespace MapsProposal.Controllers
             getCapabilitiesResponse.Close();
             readStream.Close();
 
-            XmlDocument capabilities = new XmlDocument();
-            capabilities.LoadXml(xml);
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
 
-            var rootLayers = capabilities.SelectNodes("Layers");
+            List<Layer> layers = new List<Layer>();
+
+            var rootLayers = doc.SelectNodes("/WMT_MS_Capabilities/Capability/Layer");
+            foreach (XmlNode rootLayer in rootLayers)
+            {
+                if (rootLayer.SelectSingleNode("BoundingBox") != null)
+                {
+                    var rootLayerBBox = rootLayer.SelectSingleNode("BBox");
+                    layers.Add(new Layer(rootLayer.SelectSingleNode("Title").Value, 
+                        Convert.ToDouble(rootLayerBBox.Attributes["xmin"].Value),
+                        Convert.ToDouble(rootLayerBBox.Attributes["xmax"].Value),
+                        Convert.ToDouble(rootLayerBBox.Attributes["ymin"].Value),
+                        Convert.ToDouble(rootLayerBBox.Attributes["ymax"].Value)
+                        ));
+                }
+                    
+                var layerCollection = rootLayer.SelectNodes("Layer");
+                foreach (XmlNode layer in layerCollection)
+                {
+                    XmlNode title = layer.SelectSingleNode("Title");
+                    Console.WriteLine(title.InnerText);
+                    var subLayerCollection = layer.SelectNodes("Layer");
+                    foreach (XmlNode subLayer in subLayerCollection)
+                    {
+                        XmlNode subLayerTitle = subLayer.SelectSingleNode("Title");
+                        Console.WriteLine("\t" + subLayerTitle.InnerText);
+                        if (subLayer.SelectSingleNode("BoundingBox") != null)
+                        {
+                            DisplayBox(subLayer);
+                        }
+                            
+                    }
+                }
+            }
 
             //&BBOX=3237474,5039357,3243535,5045417
             string requestUrl = "https://resources.giscloud.com/wms/f5dff74a4a4d330bfc38bda9ad28faa6?SERVICE=WMS&REQUEST=GetMap&WIDTH=640&HEIGHT=640&FORMAT=image/png&bbox=-118.439916807,34.8322196664,-118.008444218,35.1945509515&styles=layer1437818_style&SRS=EPSG:4326&layers=1437818:sentinel";
@@ -72,7 +121,7 @@ namespace MapsProposal.Controllers
             bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
             byte[] imageData = ms.ToArray();
 
-
+            ViewBag.Layers = layers;
             ViewBag.ImageData = imageData;
             return View(location);
         }
