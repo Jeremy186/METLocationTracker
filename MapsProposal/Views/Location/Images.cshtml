@@ -10,3 +10,13 @@
 }
 
 <img src="@imgSrc" />
+<div>
+    <ul>
+        @foreach(var layer in ViewBag.Layers)
+        {
+            <li>
+                @layer.Title
+            </li>
+        }
+    </ul>
+</div>

@@ -100,7 +100,13 @@ namespace MapsProposal.Controllers
                         Console.WriteLine("\t" + subLayerTitle.InnerText);
                         if (subLayer.SelectSingleNode("BoundingBox") != null)
                         {
-                            DisplayBox(subLayer);
+                            var subLayerBBox = subLayer.SelectSingleNode("BBox");
+                            layers.Add(new Layer(subLayer.SelectSingleNode("Title").Value,
+                                Convert.ToDouble(subLayerBBox.Attributes["xmin"].Value),
+                                Convert.ToDouble(subLayerBBox.Attributes["xmax"].Value),
+                                Convert.ToDouble(subLayerBBox.Attributes["ymin"].Value),
+                                Convert.ToDouble(subLayerBBox.Attributes["ymax"].Value)
+                                ));
                         }
                             
                     }
