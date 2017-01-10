@@ -5,18 +5,24 @@
 
 <h2>Images</h2>
 @{
-    var base64 = Convert.ToBase64String(ViewBag.ImageData);
-    var imgSrc = String.Format("data:image/png;base64,{0}", base64);
+    //var base64 = Convert.ToBase64String(ViewBag.ImageData);
+    //var imgSrc = String.Format("data:image/png;base64,{0}", base64);
 }
 
-<img src="@imgSrc" />
-<div>
-    <ul>
-        @foreach(var layer in ViewBag.Layers)
+
+<table>
+    
+        @foreach (var layer in ViewBag.Layers)
         {
-            <li>
-                @layer.Title
-            </li>
+            <tr>
+                <td>
+                    @layer.Title
+                    
+                </td>
+                <td>
+                    @Html.ActionLink("Get image", "Image", null, new { adf: "" })
+                </td>
+            </tr>
         }
-    </ul>
-</div>
+    
+</table>
