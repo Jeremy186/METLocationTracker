@@ -20,7 +20,7 @@
                     
                 </td>
                 <td>
-                    @Html.ActionLink("Get image", "Image", null, new { adf: "" })
+                    @Html.ActionLink("Get image", "Image", new { id=ViewContext.RouteData.Values["id"],layerTitle=layer.Name }, null)
                 </td>
             </tr>
         }

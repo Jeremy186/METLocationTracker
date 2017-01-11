@@ -31,15 +31,17 @@ namespace MapsProposal.Controllers
 
         public class Layer
         {
-            public string Title;
+            public string Title { get; set; }
+            public string Name { get; set; }
             public double xMin { get; set; }
             public double xMax { get; set; }
             public double yMin { get; set; }
             public double yMax { get; set; }
 
-            public Layer(string title, double xmin, double xmax, double ymin, double ymax)
+            public Layer(string title, string name, double xmin, double xmax, double ymin, double ymax)
             {
                 Title = title;
+                Name = name;
                 xMax = xmax;
                 xMin = xmin;
                 yMin = ymin;
@@ -47,9 +49,59 @@ namespace MapsProposal.Controllers
             }
         }
 
-        public ActionResult Image(int? id, )
+        public ActionResult Image(int? id, string layerTitle)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Location location = db.Locations.Find(id);
+            if (location == null)
+            {
+                return HttpNotFound();
+            }
+            XmlDocument doc = GetCapabilities();
 
+            XmlNode layerName = doc.SelectSingleNode("//Name[text()='"+layerTitle+"']");
+            XmlNode layer = layerName.ParentNode;
+            XmlNode styleName = layer.SelectSingleNode("Style/Name");
+
+            
+            //&BBOX=3237474,5039357,3243535,5045417
+            string requestUrl = "https://resources.giscloud.com/wms/f5dff74a4a4d330bfc38bda9ad28faa6?SERVICE=WMS&REQUEST=GetMap&WIDTH=640&HEIGHT=640&FORMAT=image/png&bbox=-118.439916807,34.8322196664,-118.008444218,35.1945509515&SRS=EPSG:4326&layers=" + layerName.InnerText + "&styles=" + styleName.InnerText;
+            //string bboxParams = "&BBOX=" + location.SouthWestLongitude + "," + location.NorthEastLongitude + "," + location.SouthWestLatitude + "," + location.NorthEastLatitude;
+            //requestUrl += bboxParams;
+
+            var request = WebRequest.Create(requestUrl);
+            var response = request.GetResponse();
+            var bitmap = System.Drawing.Image.FromStream(response.GetResponseStream());
+            response.Close();
+
+            MemoryStream ms = new MemoryStream();
+            bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+            byte[] imageData = ms.ToArray();
+
+            ViewBag.ImageData = imageData;
+
+            return View(location);
+        }
+
+        private static XmlDocument GetCapabilities()
+        {
+            var getCapabilitiesRequest = WebRequest.Create("https://resources.giscloud.com/wms/f5dff74a4a4d330bfc38bda9ad28faa6?SERVICE=WMS&REQUEST=GetCapabilities");
+
+            var getCapabilitiesResponse = getCapabilitiesRequest.GetResponse();
+            Stream receiveStream = getCapabilitiesResponse.GetResponseStream();
+            // Pipes the stream to a higher level stream reader with the required encoding format. 
+            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
+            string xml = readStream.ReadToEnd();
+            getCapabilitiesResponse.Close();
+            readStream.Close();
+
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xml);
+
+            return doc;
         }
 
         public ActionResult Images(int? id)
@@ -85,7 +137,8 @@ namespace MapsProposal.Controllers
                 if (rootLayer.SelectSingleNode("BoundingBox") != null)
                 {
                     var rootLayerBBox = rootLayer.SelectSingleNode("BoundingBox");
-                    layers.Add(new Layer(rootLayer.SelectSingleNode("Title").Value, 
+                    layers.Add(new Layer(rootLayer.SelectSingleNode("Title").Value,
+                        rootLayer.SelectSingleNode("Name").InnerText,
                         Convert.ToDouble(rootLayerBBox.Attributes["minx"].Value),
                         Convert.ToDouble(rootLayerBBox.Attributes["maxx"].Value),
                         Convert.ToDouble(rootLayerBBox.Attributes["miny"].Value),
@@ -106,6 +159,7 @@ namespace MapsProposal.Controllers
                         {
                                 var subLayerBBox = subLayer.SelectSingleNode("BoundingBox");
                                 layers.Add(new Layer(subLayer.SelectSingleNode("Title").InnerText,
+                                    subLayer.SelectSingleNode("Name").InnerText,
                                     Convert.ToDouble(subLayerBBox.Attributes["minx"].Value),
                                     Convert.ToDouble(subLayerBBox.Attributes["maxx"].Value),
                                     Convert.ToDouble(subLayerBBox.Attributes["miny"].Value),
@@ -132,10 +186,7 @@ namespace MapsProposal.Controllers
             bitmap.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
             byte[] imageData = ms.ToArray();
             */
-            Layer layer1 = new Layer("test", 0, 0, 0, 0);
-            Layer layer2 = new Layer("test2", 0, 0, 0, 0);
-            layers.Add(layer1);
-            layers.Add(layer2);
+
             ViewBag.Layers = layers;
             //ViewBag.ImageData = imageData;
             return View(location);
