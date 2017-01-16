@@ -66,11 +66,7 @@ namespace MapsProposal.Controllers
             XmlNode layer = layerName.ParentNode;
             XmlNode styleName = layer.SelectSingleNode("Style/Name");
 
-            
-            //&BBOX=3237474,5039357,3243535,5045417
-            string requestUrl = "https://resources.giscloud.com/wms/f5dff74a4a4d330bfc38bda9ad28faa6?SERVICE=WMS&REQUEST=GetMap&WIDTH=640&HEIGHT=640&FORMAT=image/png&bbox=-118.439916807,34.8322196664,-118.008444218,35.1945509515&SRS=EPSG:4326&layers=" + layerName.InnerText + "&styles=" + styleName.InnerText;
-            //string bboxParams = "&BBOX=" + location.SouthWestLongitude + "," + location.NorthEastLongitude + "," + location.SouthWestLatitude + "," + location.NorthEastLatitude;
-            //requestUrl += bboxParams;
+            string requestUrl = "https://resources.giscloud.com/wms/f5dff74a4a4d330bfc38bda9ad28faa6?SERVICE=WMS&REQUEST=GetMap&WIDTH=640&HEIGHT=640&FORMAT=image/png&SRS=EPSG:4326&bbox=" + location.SouthWestLongitude + "," + location.SouthWestLatitude + "," + location.NorthEastLongitude + "," + location.NorthEastLatitude + "&layers=" + layerName.InnerText + "&styles=" + styleName.InnerText;
 
             var request = WebRequest.Create(requestUrl);
             var response = request.GetResponse();
