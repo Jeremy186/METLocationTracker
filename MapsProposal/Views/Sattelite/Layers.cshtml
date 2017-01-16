@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Layers";
+}
+
+<h2>Layers</h2>
+<table>
+
+    <thead>
+        <tr>
+            <td>
+                Title
+            </td>
+            <td>
+                North East Boundary
+            </td>
+            <td>
+                South West Boundary
+            </td>
+        </tr>
+    </thead>
+@foreach (var layer in ViewBag.Layers)
+{
+    <tr>
+        <td>
+            @layer.Title
+        </td>
+        <td>
+            @layer.yMax, @layer.xMax
+        </td>
+        <td>
+            @layer.yMin, @layer.xMin
+        </td>
+        <td>
+            @Html.ActionLink("Get image", "Image", new { layerTitle = layer.Name }, null)
+        </td>
+        <td>
+            @Html.ActionLink("Show on create page", "Create", "Location", new { layerTitle = layer.Name, xMin = layer.xMin, yMin = layer.yMin, xMax = layer.xMax, yMax = layer.yMax }, null)
+        </td>
+    </tr>
+}
+</table>

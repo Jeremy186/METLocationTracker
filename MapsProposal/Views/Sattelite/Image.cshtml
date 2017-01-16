@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "Image";
+}
+
+<h2>Image</h2>
+
+@{
+    var base64 = Convert.ToBase64String(ViewBag.ImageData);
+    var imgSrc = String.Format("data:image/png;base64,{0}", base64);
+}
+
+<img width="640" height="640" src="@imgSrc" />

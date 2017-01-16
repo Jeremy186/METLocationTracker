@@ -190,6 +190,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SatteliteController.cs" />
     <Compile Include="DAL\MapsProposalContext.cs" />
     <Compile Include="DAL\MapsProposalInitialiser.cs" />
     <Compile Include="Global.asax.cs">
@@ -300,6 +301,8 @@
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Location\Images.cshtml" />
     <Content Include="Views\Location\Image.cshtml" />
+    <Content Include="Views\Sattelite\Layers.cshtml" />
+    <Content Include="Views\Sattelite\Image.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

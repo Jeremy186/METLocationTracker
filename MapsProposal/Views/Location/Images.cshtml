@@ -1,23 +1,43 @@
-﻿
+﻿@model MapsProposal.Models.Location
 @{
-    ViewBag.Title = "Images";
+    ViewBag.Title = "Layers";
 }
 
-<h2>Images</h2>
-@{
-    //var base64 = Convert.ToBase64String(ViewBag.ImageData);
-    //var imgSrc = String.Format("data:image/png;base64,{0}", base64);
-}
+<h2>Layers</h2>
 
+<h3>@Model.Name</h3>
 
+<p>North East position: @Model.NorthEastLatitude, @Model.NorthEastLongitude</p>
+<p>South West position: @Model.SouthWestLatitude, @Model.SouthWestLongitude</p>
 <table>
+    <thead>
+        <tr>
+            <td>
+                Title
+            </td>
+            <td>
+                North East Boundary
+            </td>
+            <td>
+                South West Boundary
+            </td>
+            <td>
+                Link
+            </td>
+        </tr>
+    </thead>
     
         @foreach (var layer in ViewBag.Layers)
         {
             <tr>
                 <td>
                     @layer.Title
-                    
+                </td>
+                <td>
+                    @layer.yMax, @layer.xMax
+                </td>
+                <td>
+                    @layer.yMin, @layer.xMin
                 </td>
                 <td>
                     @Html.ActionLink("Get image", "Image", new { id=ViewContext.RouteData.Values["id"],layerTitle=layer.Name }, null)
