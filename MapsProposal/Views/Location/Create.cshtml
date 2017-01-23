@@ -110,6 +110,17 @@
           calculateArea()
       }
 
+      function GetUrlParams() {
+          var urlParams = null;
+          if (urlParams == null) {
+              urlParams = {};
+              var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                  urlParams[key] = decodeURIComponent(value);
+              });
+          }
+          return urlParams;
+      }
+
       function initMap() {
           $('#RectangleArea').val(0);
 
@@ -283,7 +294,59 @@
           });
 
 
+          //Add layer boundary rectangle to map
+          var params = GetUrlParams();
+
+          
+          if(params.layerTitle != null)
+          {
+              console.dir(params);
+
+              var xMax = parseFloat(params.xMax)
+              var xMin = parseFloat(params.xMin)
+              var yMax = parseFloat(params.yMax)
+              var yMin = parseFloat(params.yMin)
+              var layerBounds = {
+
+                      north: yMax,
+              south: yMin,
+              east: xMax,
+              west: xMin
+                    }
+              console.log(xMax)
+              console.log(xMin)
+              console.log(yMax)
+              console.log(yMin)
+              layerRectangle = new google.maps.Rectangle({
+                  strokeColor: '#FF0000',
+                  strokeOpacity: 0.8,
+                  strokeWeight: 2,
+                  fillColor: '#FF0000',
+                  fillOpacity: 0.35,
+                  map: map,
+
+                  bounds: {
+                      north: yMax,
+                      south: yMin,
+                      east: xMax,
+                      west: xMin
+                    }
+              });
+              var xCentre = xMin + ((xMax - xMin) / 2);
+              var yCentre = yMin + ((yMax - yMin) / 2);
+              map.setCenter(new google.maps.LatLng(yCentre, xCentre));
+
+              map.fitBounds({
+                  north: yMax,
+                  south: yMin,
+                  east: xMax,
+                  west: xMin
+              })
+          }
+          
       }
+
+
 
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHH2xW97a6O5sf8XvXxfxyBQet31lmlLQ&libraries=places,drawing&callback=initMap"

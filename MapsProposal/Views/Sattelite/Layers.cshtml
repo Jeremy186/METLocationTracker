@@ -32,10 +32,10 @@
             @layer.yMin, @layer.xMin
         </td>
         <td>
-            @Html.ActionLink("Get image", "Image", new { layerTitle = layer.Name }, null)
+            @Html.ActionLink("Get full image", "Image", new { layerTitle = layer.Name }, null)
         </td>
         <td>
-            @Html.ActionLink("Show on create page", "Create", "Location", new { layerTitle = layer.Name, xMin = layer.xMin, yMin = layer.yMin, xMax = layer.xMax, yMax = layer.yMax }, null)
+            @Html.ActionLink("Show boundaries", "Create", "Location", new { layerTitle = layer.Name, xMin = layer.xMin, yMin = layer.yMin, xMax = layer.xMax, yMax = layer.yMax }, null)
         </td>
     </tr>
 }
